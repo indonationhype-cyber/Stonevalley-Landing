@@ -1,267 +1,722 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stonevalley 2.0 — Institutional Trading Education</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         :root {
-            --sv-basalt: #151213;
-            --sv-slate: #3a3a3a;
+            --sv-basalt: #0a090a;
+            --sv-slate: rgba(255, 255, 255, 0.08);
             --sv-lime: #8fec00;
             --sv-glacier: #f4f6f8;
             --sv-emerald: #008c49;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--sv-basalt);
             color: var(--sv-glacier);
-            scroll-behavior: smooth;
+            overflow-x: hidden;
+            letter-spacing: -0.011em;
         }
 
-        .neon-border {
-            border: 1px solid var(--sv-slate);
-            transition: all 0.3s ease;
+        /* Apple Liquid Glass Core Engine */
+        .liquid-glass-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(30px) saturate(210%);
+            -webkit-backdrop-filter: blur(30px) saturate(210%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.6),
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.4);
         }
 
-        .neon-border:hover {
-            border-color: var(--sv-lime);
-            box-shadow: 0 0 15px rgba(143, 236, 0, 0.1);
+        .liquid-glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.015) 100%);
+            backdrop-filter: blur(24px) saturate(190%);
+            -webkit-backdrop-filter: blur(24px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 16px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .neon-btn {
-            background-color: var(--sv-lime);
-            color: var(--sv-basalt);
-            box-shadow: 0 0 20px rgba(143, 236, 0, 0.2);
-            transition: all 0.2s ease;
+        .liquid-glass-card:hover {
+            border-color: rgba(143, 236, 0, 0.45);
+            background: linear-gradient(135deg, rgba(143, 236, 0, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            transform: translateY(-4px) scale(1.012);
+            box-shadow: 
+                0 24px 50px rgba(143, 236, 0, 0.18),
+                inset 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
-        .neon-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 35px rgba(143, 236, 0, 0.4);
+        /* Glass Pill Badge */
+        .liquid-pill {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
         }
 
+        .liquid-pill-lime {
+            background: linear-gradient(90deg, rgba(143, 236, 0, 0.18), rgba(0, 140, 73, 0.12));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(143, 236, 0, 0.35);
+            box-shadow: 0 0 20px rgba(143, 236, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+        }
+
+        .liquid-input {
+            background: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: #f4f6f8 !important;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .liquid-input:focus {
+            border-color: rgba(143, 236, 0, 0.7) !important;
+            background: rgba(143, 236, 0, 0.05) !important;
+            box-shadow: 0 0 25px rgba(143, 236, 0, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+            outline: none;
+        }
+
+        /* Glossy Liquid Lime Button */
+        .liquid-btn-lime {
+            background: linear-gradient(135deg, #a3ff00 0%, #76c400 100%);
+            color: #0a090a;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 12px 30px rgba(143, 236, 0, 0.35),
+                inset 0 1px 1px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .liquid-btn-lime:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 20px 45px rgba(143, 236, 0, 0.5),
+                inset 0 1px 2px rgba(255, 255, 255, 0.9);
+        }
+
+        .liquid-btn-lime::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            transition: 0.6s;
+        }
+
+        .liquid-btn-lime:hover::after {
+            left: 150%;
+        }
+
+        /* Chart Canvas Layout Fix */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
+            margin: 0 auto;
+            height: 320px;
         }
 
-        .glass-card {
-            background: rgba(58, 58, 58, 0.1);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--sv-slate);
+        /* Ambient Background Mesh Spheres */
+        .ambient-glow-1 {
+            position: absolute;
+            top: 5%;
+            left: 20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(143, 236, 0, 0.12) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(100px);
+            z-index: -2;
+            pointer-events: none;
         }
 
-        .ig-card {
-            background: linear-gradient(45deg, rgba(143, 236, 0, 0.05) 0%, rgba(0, 140, 73, 0.05) 100%);
-            border: 1px border var(--sv-slate);
+        .ambient-glow-2 {
+            position: absolute;
+            top: 40%;
+            right: 10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 140, 73, 0.15) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(120px);
+            z-index: -2;
+            pointer-events: none;
         }
 
-        input, select {
-            background: rgba(255, 255, 255, 0.03) !important;
-            border: 1px solid var(--sv-slate) !important;
-            color: var(--sv-glacier) !important;
-            appearance: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--sv-lime) !important;
-            outline: none;
-        }
-
-        option {
-            background-color: var(--sv-basalt);
-            color: white;
+        .ambient-glow-3 {
+            position: absolute;
+            bottom: 15%;
+            left: 15%;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(143, 236, 0, 0.1) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(110px);
+            z-index: -2;
+            pointer-events: none;
         }
 
         .x-motif {
             position: absolute;
-            top: 50%;
+            top: 25%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 40rem;
-            color: var(--sv-lime);
-            opacity: 0.02;
+            font-size: 38rem;
+            color: #8fec00;
+            opacity: 0.018;
             pointer-events: none;
             z-index: -1;
             font-weight: 900;
+            filter: blur(2px);
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="relative min-h-screen selection:bg-[#8fec00]/30 selection:text-[#8fec00]">
 
+    <!-- Ambient Glowing Backdrops (Liquid Mesh) -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    <div class="ambient-glow-3"></div>
     <div class="x-motif">X</div>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 border-b border-[#3a3a3a] bg-[#151213]/90 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <nav class="fixed top-3 left-0 right-0 z-50 max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="liquid-glass-panel rounded-2xl px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-[#8fec00] flex items-center justify-center font-bold text-[#151213] rounded-sm text-sm">SV</div>
+                
+                <!-- ============================================================== -->
+                <!-- TEMPLATE LOGO UTAMA STONEVALLEY                                 -->
+                <!-- Ganti src="..." di bawah dengan URL logo transparan kamu    -->
+                <!-- ============================================================== -->
+                <div class="w-10 h-10 liquid-pill-lime flex items-center justify-center rounded-xl p-1 shadow-lg overflow-hidden">
+                    <img id="brand-logo" 
+                         src="https://placehold.co/200x200/8fec00/0a090a?text=SV" 
+                         alt="Stonevalley Logo" 
+                         class="w-full h-full object-contain rounded-lg"
+                         onerror="this.style.display='none'; document.getElementById('brand-logo-fallback').style.display='block';">
+                    <span id="brand-logo-fallback" class="hidden font-black text-[#0a090a] text-xs">SV</span>
+                </div>
+
                 <div class="flex flex-col leading-none">
-                    <span class="font-bold tracking-tighter text-xl uppercase">Stonevalley</span>
-                    <span class="text-[9px] tracking-[0.3em] text-[#8fec00] font-semibold uppercase">Academy 2.0</span>
+                    <span class="font-extrabold tracking-tight text-lg text-white">Stonevalley</span>
+                    <span class="text-[8px] tracking-[0.35em] text-[#8fec00] font-bold uppercase mt-0.5">Academy 2.0</span>
                 </div>
             </div>
-            <div class="hidden md:flex gap-10 text-[10px] font-bold tracking-widest text-gray-400">
-                <a href="#methodology" class="hover:text-[#8fec00] transition uppercase">Metodologi</a>
-                <a href="#instagram" class="hover:text-[#8fec00] transition uppercase">Insight Harian</a>
-                <a href="#gate" class="hover:text-[#8fec00] transition uppercase">Pendaftaran</a>
+            
+            <div class="hidden md:flex items-center gap-8 text-[11px] font-semibold tracking-wider text-gray-300">
+                <a href="#partners" class="hover:text-[#8fec00] transition-colors uppercase">Partners</a>
+                <a href="#methodology" class="hover:text-[#8fec00] transition-colors uppercase">Metodologi</a>
+                <a href="#instagram" class="hover:text-[#8fec00] transition-colors uppercase">Ekosistem IG</a>
+                <a href="#gate" class="hover:text-[#8fec00] transition-colors uppercase">Pendaftaran</a>
             </div>
-            <a href="#gate" class="text-[10px] font-bold border border-[#8fec00] text-[#8fec00] px-5 py-2 hover:bg-[#8fec00] hover:text-[#151213] transition-all uppercase">
+
+            <a href="#gate" class="liquid-pill-lime px-4 py-2 rounded-xl text-[10px] font-extrabold text-[#8fec00] hover:text-white uppercase tracking-wider transition-all">
                 Akses Portal
             </a>
         </div>
     </nav>
 
-    <!-- SECTION 1: HERO -->
-    <section class="min-h-screen pt-40 pb-20 px-6 flex flex-col items-center justify-center text-center">
-        <div class="max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-3 mb-8 px-5 py-2 border border-[#3a3a3a] rounded-full bg-white/5">
-                <span class="w-2 h-2 rounded-full bg-[#8fec00] animate-pulse"></span>
-                <span class="text-[10px] tracking-widest text-gray-300 font-medium uppercase">Multi-Dimensional Framework</span>
+    <section class="min-h-screen pt-36 pb-16 px-6 flex flex-col items-center justify-center text-center relative">
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            
+            <!-- Glass Pill Tag -->
+            <div class="inline-flex items-center gap-3 mb-8 px-5 py-2.5 rounded-full liquid-pill-lime">
+                <span class="w-2 h-2 rounded-full bg-[#8fec00] animate-ping"></span>
+                <span class="text-[10px] tracking-[0.25em] text-[#8fec00] font-extrabold uppercase">Multi-Dimensional Framework</span>
             </div>
-            <h1 class="text-5xl md:text-8xl font-bold leading-[1.1] mb-8 tracking-tighter uppercase">
-                Trading Rasional <br> <span class="text-[#8fec00]">Bukan Tebak-Tebakan.</span>
+
+            <!-- Headline -->
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-black leading-[1.05] mb-8 tracking-tight uppercase text-white">
+                Trading Rasional. <br> 
+                <span class="bg-gradient-to-r from-[#8fec00] via-[#c6ff60] to-[#008c49] bg-clip-text text-transparent">
+                    Bukan Tebak-Tebakan.
+                </span>
             </h1>
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-14 leading-relaxed font-light">
-                Dari dasar nol hingga penguasaan mekanisme institusional. Pelajari struktur pasar, likuiditas, dan manajemen risiko secara mendalam tanpa biaya langganan.
+
+            <!-- Subheading -->
+            <p class="text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-normal opacity-90">
+                Dari dasar nol hingga penguasaan mekanisme institusional. Pelajari struktur pasar, likuiditas, dan manajemen risiko secara presisi.
             </p>
-            <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                <a href="#gate" class="neon-btn px-10 py-5 rounded-sm font-bold text-xs tracking-widest uppercase">
-                    Mulai Belajar Dari Nol (Gratis)
+
+            <!-- Call To Action -->
+            <div class="flex flex-col sm:flex-row gap-5 justify-center w-full max-w-md">
+                <a href="#gate" class="liquid-btn-lime py-4 px-8 rounded-2xl font-black text-xs tracking-[0.2em] uppercase text-center w-full">
+                    Daftar Akses Gratis Sekarang →
                 </a>
+            </div>
+
+            <!-- Mini Trust Badges -->
+            <div class="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-[10px] uppercase font-bold text-gray-400 tracking-widest">
+                <div class="flex items-center gap-2">
+                    <span class="text-[#8fec00]">✓</span> Kurikulum Dari Nol
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[#8fec00]">✓</span> Smart Money Concepts
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-[#8fec00]">✓</span> Market Depth / DOM
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2: THE ROADMAP EXPLORER -->
-    <section id="methodology" class="py-32 px-6 bg-gradient-to-b from-transparent to-[#1a1718]">
+    <!-- DEDICATED LIVE MARKET WATCH SECTION (BTC, ETH, SOL, XAU) -->
+    <section id="market-watch" class="py-12 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full liquid-pill mb-2">
+                        <span class="w-2 h-2 rounded-full bg-[#8fec00] animate-ping"></span>
+                        <span class="text-[9px] tracking-[0.2em] font-extrabold text-[#8fec00] uppercase">Live Institutional Feed</span>
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-black tracking-tight uppercase text-white">Market Desk Terminal</h3>
+                </div>
+                <span class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Real-Time Price Sync (24h)</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- BTC CARD -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-black text-white text-base uppercase tracking-wider">BTC / USD</span>
+                        <span class="text-[9px] px-2.5 py-1 rounded-full liquid-pill font-extrabold text-gray-300">BITCOIN</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="price-BTCUSDT" class="text-2xl font-black text-white font-mono tracking-tight">Syncing...</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="change-BTCUSDT" class="text-xs font-extrabold font-mono text-gray-400">--</span>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">24h Change</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ETH CARD -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-black text-white text-base uppercase tracking-wider">ETH / USD</span>
+                        <span class="text-[9px] px-2.5 py-1 rounded-full liquid-pill font-extrabold text-gray-300">ETHEREUM</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="price-ETHUSDT" class="text-2xl font-black text-white font-mono tracking-tight">Syncing...</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="change-ETHUSDT" class="text-xs font-extrabold font-mono text-gray-400">--</span>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">24h Change</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOL CARD -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-black text-white text-base uppercase tracking-wider">SOL / USD</span>
+                        <span class="text-[9px] px-2.5 py-1 rounded-full liquid-pill font-extrabold text-gray-300">SOLANA</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="price-SOLUSDT" class="text-2xl font-black text-white font-mono tracking-tight">Syncing...</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="change-SOLUSDT" class="text-xs font-extrabold font-mono text-gray-400">--</span>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">24h Change</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- XAU CARD (GOLD) -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-black text-[#8fec00] text-base uppercase tracking-wider">XAU / USD</span>
+                        <span class="text-[9px] px-2.5 py-1 rounded-full liquid-pill-lime font-extrabold text-[#8fec00]">GOLD SPOT</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="price-PAXGUSDT" class="text-2xl font-black text-white font-mono tracking-tight">Syncing...</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="change-PAXGUSDT" class="text-xs font-extrabold font-mono text-gray-400">--</span>
+                            <span class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">24h Change</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEDICATED INSTITUTIONAL ETF FLOWS SECTION (SOSOVALUE API READY) -->
+    <section id="etf-flows" class="py-12 px-6 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full liquid-pill mb-2">
+                        <span class="w-2 h-2 rounded-full bg-[#8fec00] animate-pulse"></span>
+                        <span class="text-[9px] tracking-[0.2em] font-extrabold text-[#8fec00] uppercase">SoSoValue Data Engine</span>
+                    </div>
+                    <h3 class="text-2xl sm:text-3xl font-black tracking-tight uppercase text-white">Daily ETF Flow Summary</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="etf-last-update" class="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Live Flow Data</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- BTC ETF DAILY NET INFLOW -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-black text-white text-sm uppercase tracking-wider">BTC ETF Daily Inflow</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full liquid-pill-lime font-extrabold text-[#8fec00]">SPOT BTC</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="etf-btc-daily" class="text-2xl font-black text-[#8fec00] font-mono tracking-tight">Loading...</div>
+                        <div id="etf-btc-status" class="text-[10px] font-extrabold font-mono text-gray-400 mt-1">Net Accumulation</div>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 text-[9px] text-gray-500 uppercase tracking-wider flex justify-between">
+                        <span>Institution Action</span>
+                        <span class="text-[#8fec00] font-bold">BUYING</span>
+                    </div>
+                </div>
+
+                <!-- ETH ETF DAILY NET INFLOW -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-black text-white text-sm uppercase tracking-wider">ETH ETF Daily Inflow</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full liquid-pill font-extrabold text-gray-300">SPOT ETH</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="etf-eth-daily" class="text-2xl font-black text-white font-mono tracking-tight">Loading...</div>
+                        <div id="etf-eth-status" class="text-[10px] font-extrabold font-mono text-gray-400 mt-1">Net Inflow</div>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 text-[9px] text-gray-500 uppercase tracking-wider flex justify-between">
+                        <span>Institution Action</span>
+                        <span class="text-[#8fec00] font-bold">ACCUMULATING</span>
+                    </div>
+                </div>
+
+                <!-- BTC TOTAL CUMULATIVE INFLOW -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-black text-white text-sm uppercase tracking-wider">BTC Cumulative Inflow</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full liquid-pill font-extrabold text-gray-300">HISTORICAL</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="etf-btc-cum" class="text-2xl font-black text-white font-mono tracking-tight">Loading...</div>
+                        <div class="text-[10px] font-extrabold font-mono text-gray-400 mt-1">Total Net Capital</div>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 text-[9px] text-gray-500 uppercase tracking-wider flex justify-between">
+                        <span>Market Depth</span>
+                        <span class="text-white font-bold">High Density</span>
+                    </div>
+                </div>
+
+                <!-- TOTAL ETF AUM -->
+                <div class="liquid-glass-card p-6 rounded-2xl flex flex-col justify-between relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="font-black text-white text-sm uppercase tracking-wider">Total ETF Net Assets</span>
+                        <span class="text-[8px] px-2 py-0.5 rounded-full liquid-pill-lime font-extrabold text-[#8fec00]">AUM</span>
+                    </div>
+                    <div class="my-2">
+                        <div id="etf-total-aum" class="text-2xl font-black text-[#8fec00] font-mono tracking-tight">Loading...</div>
+                        <div class="text-[10px] font-extrabold font-mono text-gray-400 mt-1">Institutional Holding</div>
+                    </div>
+                    <div class="pt-3 border-t border-white/10 text-[9px] text-gray-500 uppercase tracking-wider flex justify-between">
+                        <span>SoSoValue Index</span>
+                        <span class="text-[#8fec00] font-bold">Verified</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partners" class="py-20 px-6 relative">
+        <div class="max-w-6xl mx-auto flex flex-col items-center">
+            
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full liquid-pill mb-4">
+                    <span class="w-2 h-2 rounded-full bg-[#8fec00] animate-pulse"></span>
+                    <span class="text-[10px] tracking-[0.25em] font-extrabold text-[#8fec00] uppercase">Official Ecosystem Partners</span>
+                </div>
+                <h3 class="text-3xl md:text-4xl font-extrabold tracking-tight uppercase text-white">
+                    Terintegrasi Dengan Standar Industri
+                </h3>
+                <p class="text-gray-400 text-xs sm:text-sm mt-3 max-w-md mx-auto">
+                    Infrastruktur ekosistem resmi yang mendukung analisa teknis, penyediaan likuiditas, dan eksekusi presisi Stonevalley 2.0.
+                </p>
+            </div>
+
+            <!-- Horizontal Grid Container (3 Kolom Liquid Glass) -->
+            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- TradingView Card -->
+                <div class="liquid-glass-card p-7 rounded-3xl flex flex-col justify-between group cursor-pointer relative overflow-hidden h-full">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            
+                            <!-- ============================================================== -->
+                            <!-- TEMPLATE LOGO TRADINGVIEW                                     -->
+                            <!-- Ganti src="..." dengan URL logo TradingView kamu               -->
+                            <!-- ============================================================== -->
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 border border-white/20 flex items-center justify-center p-2 shadow-inner group-hover:scale-110 transition-transform overflow-hidden">
+                                <img id="logo-tv" 
+                                     src="https://placehold.co/120x120/1a1a1a/8fec00?text=TradingView" 
+                                     alt="TradingView Logo" 
+                                     class="w-full h-full object-contain rounded-xl"
+                                     onerror="this.style.display='none'; document.getElementById('logo-tv-fallback').style.display='block';">
+                                <span id="logo-tv-fallback" class="hidden font-black text-[#8fec00] text-sm">TV</span>
+                            </div>
+
+                            <span class="text-[9px] px-3 py-1 rounded-full liquid-pill-lime font-bold tracking-wider uppercase text-[#8fec00]">
+                                Chart Engine
+                            </span>
+                        </div>
+                        <h4 class="font-black text-lg tracking-wider text-white uppercase mb-2">TradingView</h4>
+                        <p class="text-xs text-gray-300 leading-relaxed font-light">Standardisasi grafik institusional & analytics engine resmi untuk seluruh modul pemetaan teknis Stonevalley.</p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest">Analytics Standard</span>
+                        <span class="text-[#8fec00] text-xs font-extrabold group-hover:translate-x-1 transition-transform">Explore →</span>
+                    </div>
+                </div>
+
+                <!-- Bybit Card -->
+                <div class="liquid-glass-card p-7 rounded-3xl flex flex-col justify-between group cursor-pointer relative overflow-hidden h-full">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            
+                            <!-- ============================================================== -->
+                            <!-- TEMPLATE LOGO BYBIT                                           -->
+                            <!-- Ganti src="..." dengan URL logo Bybit kamu                     -->
+                            <!-- ============================================================== -->
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#8fec00]/30 to-black/50 border border-[#8fec00]/40 flex items-center justify-center p-2 shadow-inner group-hover:scale-110 transition-transform overflow-hidden">
+                                <img id="logo-bybit" 
+                                     src="https://placehold.co/120x120/121212/8fec00?text=Bybit" 
+                                     alt="Bybit Logo" 
+                                     class="w-full h-full object-contain rounded-xl"
+                                     onerror="this.style.display='none'; document.getElementById('logo-bybit-fallback').style.display='block';">
+                                <span id="logo-bybit-fallback" class="hidden font-black text-[#8fec00] text-sm">BY</span>
+                            </div>
+
+                            <span class="text-[9px] px-3 py-1 rounded-full liquid-pill-lime font-bold tracking-wider uppercase text-[#8fec00]">
+                                Crypto Liquidity
+                            </span>
+                        </div>
+                        <h4 class="font-black text-lg tracking-wider text-white uppercase mb-2">Bybit Exchange</h4>
+                        <p class="text-xs text-gray-300 leading-relaxed font-light">Penyedia likuiditas utama aset kripto & Futures, tempat penerapan analisis Order Flow & DOM secara real-time.</p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest">Primary Exchange</span>
+                        <span class="text-[#8fec00] text-xs font-extrabold group-hover:translate-x-1 transition-transform">Explore →</span>
+                    </div>
+                </div>
+
+                <!-- HFX Card -->
+                <div class="liquid-glass-card p-7 rounded-3xl flex flex-col justify-between group cursor-pointer relative overflow-hidden h-full">
+                    <div>
+                        <div class="flex items-center justify-between mb-5">
+                            
+                            <!-- ============================================================== -->
+                            <!-- TEMPLATE LOGO HFX BROKER                                      -->
+                            <!-- Ganti src="..." dengan URL logo HFX kamu                       -->
+                            <!-- ============================================================== -->
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#008c49]/50 to-black/50 border border-[#008c49]/50 flex items-center justify-center p-2 shadow-inner group-hover:scale-110 transition-transform overflow-hidden">
+                                <img id="logo-hfx" 
+                                     src="https://placehold.co/120x120/008c49/ffffff?text=HFX" 
+                                     alt="HFX Logo" 
+                                     class="w-full h-full object-contain rounded-xl"
+                                     onerror="this.style.display='none'; document.getElementById('logo-hfx-fallback').style.display='block';">
+                                <span id="logo-hfx-fallback" class="hidden font-black text-white text-sm">HFX</span>
+                            </div>
+
+                            <span class="text-[9px] px-3 py-1 rounded-full liquid-pill-lime font-bold tracking-wider uppercase text-[#8fec00]">
+                                Forex & CFD
+                            </span>
+                        </div>
+                        <h4 class="font-black text-lg tracking-wider text-white uppercase mb-2">HFX Broker</h4>
+                        <p class="text-xs text-gray-300 leading-relaxed font-light">Layanan eksekusi Forex, Komoditas (Gold), dan Indeks berlisensi dengan spread kompetitif untuk analisa Teleskopik.</p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest">Licensed Broker</span>
+                        <span class="text-[#8fec00] text-xs font-extrabold group-hover:translate-x-1 transition-transform">Explore →</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="methodology" class="py-24 px-6 relative">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <h2 class="text-xs font-bold text-[#8fec00] tracking-[0.4em] mb-6 uppercase">[ Kurikulum Terstruktur ]</h2>
-                <h3 class="text-4xl font-bold mb-6 tracking-tight">Kuasai Seluruh Dimensi Market.</h3>
-                <p class="text-gray-500 max-w-xl mx-auto text-sm">Pelajari bagaimana pasar finansial bekerja dari akarnya, mulai dari pondasi dasar hingga data likuiditas profesional.</p>
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold text-[#8fec00] tracking-[0.4em] uppercase mb-3 block">[ Kurikulum Terstruktur ]</span>
+                <h2 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight">Kuasai Seluruh Dimensi Market.</h2>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm mt-3">Pelajari bagaimana pasar finansial bekerja dari akarnya, mulai dari pondasi dasar hingga data likuiditas profesional.</p>
             </div>
             
-            <div class="grid lg:grid-cols-12 gap-10 items-start">
-                <div class="lg:col-span-4 space-y-3">
-                    <button onclick="switchPillar(0)" class="w-full text-left p-6 glass-card hover:bg-white/5 transition flex items-center justify-between group pillar-btn" id="p-0">
-                        <span class="font-bold text-[10px] tracking-widest uppercase">01. Pondasi Mekanisme</span>
-                        <span class="text-[#8fec00] opacity-0 group-hover:opacity-100 transition">→</span>
-                    </button>
-                    <button onclick="switchPillar(1)" class="w-full text-left p-6 glass-card hover:bg-white/5 transition flex items-center justify-between group pillar-btn" id="p-1">
-                        <span class="font-bold text-[10px] tracking-widest uppercase">02. Telescopic Matrix</span>
-                        <span class="text-[#8fec00] opacity-0 group-hover:opacity-100 transition">→</span>
-                    </button>
-                    <button onclick="switchPillar(2)" class="w-full text-left p-6 glass-card hover:bg-white/5 transition flex items-center justify-between group pillar-btn" id="p-2">
-                        <span class="font-bold text-[10px] tracking-widest uppercase">03. Smart Money (SMC)</span>
-                        <span class="text-[#8fec00] opacity-0 group-hover:opacity-100 transition">→</span>
-                    </button>
-                    <button onclick="switchPillar(3)" class="w-full text-left p-6 glass-card hover:bg-white/5 transition flex items-center justify-between group pillar-btn" id="p-3">
-                        <span class="font-bold text-[10px] tracking-widest uppercase">04. Market Depth / DOM</span>
-                        <span class="text-[#8fec00] opacity-0 group-hover:opacity-100 transition">→</span>
-                    </button>
-                </div>
-
-                <div class="lg:col-span-8 bg-[#1a1718] p-10 border border-[#3a3a3a] rounded-sm min-h-[500px]">
-                    <div id="pillar-content">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-[1px] bg-[#8fec00]"></div>
-                            <span class="text-[#8fec00] text-[10px] font-bold tracking-widest uppercase" id="pillar-label">Level 01</span>
-                        </div>
-                        <h4 class="text-3xl font-bold mb-6" id="pillar-title">Pondasi Mekanisme</h4>
-                        <p class="text-gray-400 mb-10 leading-relaxed text-sm max-w-lg" id="pillar-desc">Memahami arsitektur pasar finansial dari dasar: Jenis instrumen, leverage, dan manajemen risiko sebagai pilar pertahanan utama.</p>
-                        
-                        <div class="chart-container">
-                            <canvas id="methodologyChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: INSTAGRAM DRIVE -->
-    <section id="instagram" class="py-32 px-6 border-y border-[#3a3a3a] bg-black">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-            <div>
-                <h2 class="text-xs font-bold text-[#8fec00] tracking-[0.4em] mb-6 uppercase">[ Social Ecosystem ]</h2>
-                <h3 class="text-4xl font-bold mb-8 tracking-tight">Pantau Insight Market <br>Setiap Hari di Instagram.</h3>
-                <p class="text-gray-400 mb-10 leading-relaxed font-light">Bukan sekadar edukasi statis, lihat bagaimana kami membedah market secara live di Instagram Story. Dapatkan setup harian, edukasi kilat, dan psikologi trading langsung di genggaman Anda.</p>
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
                 
-                <div class="grid grid-cols-2 gap-4 mb-10">
-                    <div class="p-5 border border-[#3a3a3a] rounded-sm">
-                        <div class="text-[#8fec00] font-bold text-xl mb-1">Daily</div>
-                        <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Setup Analysis</div>
-                    </div>
-                    <div class="p-5 border border-[#3a3a3a] rounded-sm">
-                        <div class="text-[#8fec00] font-bold text-xl mb-1">Exclusive</div>
-                        <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Trading Tips</div>
-                    </div>
+                <!-- Tab Selector Buttons -->
+                <div class="lg:col-span-4 space-y-3">
+                    <button onclick="switchPillar(0)" class="w-full text-left p-5 rounded-2xl liquid-glass-card flex items-center justify-between group pillar-btn transition-all" id="p-0">
+                        <span class="font-extrabold text-xs tracking-wider uppercase">01. Pondasi Mekanisme</span>
+                        <span class="text-[#8fec00] font-black group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
+                    <button onclick="switchPillar(1)" class="w-full text-left p-5 rounded-2xl liquid-glass-card flex items-center justify-between group pillar-btn transition-all" id="p-1">
+                        <span class="font-extrabold text-xs tracking-wider uppercase">02. Telescopic Matrix</span>
+                        <span class="text-[#8fec00] font-black group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
+                    <button onclick="switchPillar(2)" class="w-full text-left p-5 rounded-2xl liquid-glass-card flex items-center justify-between group pillar-btn transition-all" id="p-2">
+                        <span class="font-extrabold text-xs tracking-wider uppercase">03. Smart Money (SMC)</span>
+                        <span class="text-[#8fec00] font-black group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
+                    <button onclick="switchPillar(3)" class="w-full text-left p-5 rounded-2xl liquid-glass-card flex items-center justify-between group pillar-btn transition-all" id="p-3">
+                        <span class="font-extrabold text-xs tracking-wider uppercase">04. Market Depth / DOM</span>
+                        <span class="text-[#8fec00] font-black group-hover:translate-x-1 transition-transform">→</span>
+                    </button>
                 </div>
 
-                <a href="https://instagram.com/stonevalley.fx" target="_blank" class="inline-flex items-center gap-4 bg-white text-black px-10 py-5 rounded-sm font-bold text-xs tracking-widest uppercase hover:bg-[#8fec00] transition-all">
-                    Follow @Stonevalley.fx →
-                </a>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="aspect-[4/5] bg-[#1a1718] border border-[#3a3a3a] flex flex-col justify-end p-6">
-                    <span class="text-[8px] text-gray-500 uppercase tracking-widest mb-2 font-bold">Setup Breakdown</span>
-                    <div class="w-full h-1 bg-[#8fec00]"></div>
-                </div>
-                <div class="aspect-[4/5] bg-[#1a1718] border border-[#3a3a3a] mt-10 flex flex-col justify-end p-6">
-                    <span class="text-[8px] text-gray-500 uppercase tracking-widest mb-2 font-bold">Market Psychology</span>
-                    <div class="w-full h-1 bg-[#8fec00]"></div>
+                <!-- Active Pillar Content Display -->
+                <div class="lg:col-span-8 liquid-glass-panel p-8 sm:p-10 rounded-3xl min-h-[480px] flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="w-8 h-[2px] bg-[#8fec00]"></span>
+                            <span class="text-[#8fec00] text-[10px] font-black tracking-widest uppercase" id="pillar-label">Level 01</span>
+                        </div>
+                        <h3 class="text-3xl font-black text-white uppercase mb-4" id="pillar-title">Pondasi Mekanisme</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed max-w-xl mb-8" id="pillar-desc">
+                            Memahami arsitektur pasar finansial dari dasar: Jenis instrumen, leverage, dan manajemen risiko sebagai pilar pertahanan utama.
+                        </p>
+                    </div>
+
+                    <!-- Chart Canvas -->
+                    <div class="chart-container">
+                        <canvas id="methodologyChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 4: THE ADMISSION FORM -->
-    <section id="gate" class="py-32 px-6">
-        <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-xs font-bold text-[#8fec00] tracking-[0.4em] mb-6 uppercase">[ Admission Portal ]</h2>
-                <h3 class="text-4xl font-bold mb-4">Daftar Akses Modul Eksklusif</h3>
-                <p class="text-gray-500 text-sm">Lengkapi data Anda untuk mendapatkan instruksi akses modul 'Bab 0 - Pro'.</p>
-            </div>
-
-            <div class="glass-card p-10 md:p-14 border-t-2 border-t-[#8fec00]">
-                <form id="regForm" class="space-y-8">
-                    <div class="grid md:grid-cols-2 gap-8">
+    <section id="instagram" class="py-24 px-6 relative">
+        <div class="max-w-7xl mx-auto liquid-glass-panel rounded-3xl p-8 sm:p-14">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-xs font-bold text-[#8fec00] tracking-[0.4em] uppercase mb-4 block">[ Social Ecosystem ]</span>
+                    <h2 class="text-3xl sm:text-5xl font-black uppercase text-white tracking-tight mb-6">
+                        Edukasi Harian & Setup <br> di Instagram Kami.
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-8 font-light">
+                        Jangan ketinggalan insight harian. Kami rutin membagikan setup market, psikologi trading, dan update kurikulum langsung lewat Instagram Story dan Reels.
+                    </p>
+                    
+                    <div class="flex items-center gap-6 mb-8">
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">Nama Lengkap</label>
-                            <input type="text" id="name" placeholder="Contoh: Budi Santoso" class="w-full p-4 text-sm" required>
+                            <div class="text-2xl sm:text-3xl font-black text-white">Daily</div>
+                            <div class="text-[9px] text-[#8fec00] uppercase tracking-widest font-extrabold">Insights</div>
                         </div>
+                        <div class="w-[1px] h-10 bg-white/20"></div>
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">WhatsApp Number</label>
-                            <input type="tel" id="wa" placeholder="0812xxxxxxxx" class="w-full p-4 text-sm" required>
+                            <div class="text-2xl sm:text-3xl font-black text-white">Live</div>
+                            <div class="text-[9px] text-[#8fec00] uppercase tracking-widest font-extrabold">Q&A Session</div>
+                        </div>
+                        <div class="w-[1px] h-10 bg-white/20"></div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-black text-white">Free</div>
+                            <div class="text-[9px] text-[#8fec00] uppercase tracking-widest font-extrabold">Breakdowns</div>
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-8">
+                    <!-- UPDATED INSTAGRAM HANDLE LINK -->
+                    <a href="https://instagram.com/stonevalleycap" target="_blank" class="liquid-pill-lime inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-black text-xs tracking-widest uppercase text-[#8fec00] hover:text-white transition-all">
+                        Follow @stonevalleycap Now →
+                    </a>
+                </div>
+
+                <!-- INSTAGRAM MEDIA CARD PREVIEW TEMPLATES -->
+                <div class="grid grid-cols-2 gap-4">
+                    
+                    <!-- ============================================================== -->
+                    <!-- TEMPLATE MEDIA INSTAGRAM 1                                    -->
+                    <!-- Ganti src="..." di bawah dengan screenshot / Banner Post IG 1 -->
+                    <!-- ============================================================== -->
+                    <div class="aspect-square liquid-glass-card rounded-2xl flex flex-col items-center justify-center p-4 text-center overflow-hidden relative group">
+                        <img id="ig-media-1" 
+                             src="https://placehold.co/600x600/1a1a1a/8fec00?text=IG+Market+Update" 
+                             alt="IG Post Preview 1" 
+                             class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; document.getElementById('ig-fallback-1').style.display='flex';">
+                        
+                        <div id="ig-fallback-1" class="hidden flex-col items-center justify-center">
+                            <div class="text-4xl mb-3">📱</div>
+                            <span class="text-[11px] font-extrabold uppercase tracking-widest text-white">Market Update</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================== -->
+                    <!-- TEMPLATE MEDIA INSTAGRAM 2                                    -->
+                    <!-- Ganti src="..." di bawah dengan screenshot / Banner Post IG 2 -->
+                    <!-- ============================================================== -->
+                    <div class="aspect-square liquid-glass-card rounded-2xl flex flex-col items-center justify-center p-4 text-center mt-8 overflow-hidden relative group">
+                        <img id="ig-media-2" 
+                             src="https://placehold.co/600x600/0a090a/008c49?text=IG+Trading+Tips" 
+                             alt="IG Post Preview 2" 
+                             class="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
+                             onerror="this.style.display='none'; document.getElementById('ig-fallback-2').style.display='flex';">
+                        
+                        <div id="ig-fallback-2" class="hidden flex-col items-center justify-center">
+                            <div class="text-4xl mb-3">💡</div>
+                            <span class="text-[11px] font-extrabold uppercase tracking-widest text-white">Trading Tips</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gate" class="py-24 px-6 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold text-[#8fec00] tracking-[0.4em] uppercase mb-3 block">[ Admission Portal ]</span>
+                <h2 class="text-4xl sm:text-5xl font-black uppercase text-white tracking-tight mb-3">Daftar & Amankan Slot Anda</h2>
+                <p class="text-gray-400 text-sm">Data Anda akan tersimpan di sistem kami sebelum diarahkan ke WhatsApp Admin.</p>
+            </div>
+
+            <div class="liquid-glass-panel p-8 sm:p-12 rounded-3xl">
+                <form id="regForm" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">Fokus Pasar</label>
-                            <select id="market" class="w-full p-4 text-sm cursor-pointer" required>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">Nama Lengkap</label>
+                            <input type="text" id="name" placeholder="Nama sesuai identitas" class="w-full p-4 rounded-xl text-sm liquid-input" required>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">No. WhatsApp</label>
+                            <input type="tel" id="wa" placeholder="08197461007" class="w-full p-4 rounded-xl text-sm liquid-input" required>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">Fokus Pasar</label>
+                            <select id="market" class="w-full p-4 rounded-xl text-sm liquid-input cursor-pointer" required>
                                 <option value="" disabled selected>Pilih Pasar...</option>
-                                <option value="Forex">Forex & Commodities</option>
-                                <option value="Crypto">Crypto Assets</option>
-                                <option value="Keduanya">Keduanya (Forex & Crypto)</option>
+                                <option value="Forex (HFX)">Forex & Commodities (HFX)</option>
+                                <option value="Crypto (Bybit)">Crypto Assets (Bybit)</option>
+                                <option value="Keduanya">Keduanya (Forex HFX & Crypto Bybit)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">Rencana Alokasi Modal</label>
-                            <select id="capital" class="w-full p-4 text-sm cursor-pointer" required>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">Rencana Modal</label>
+                            <select id="capital" class="w-full p-4 rounded-xl text-sm liquid-input cursor-pointer" required>
                                 <option value="" disabled selected>Pilih Kisaran Modal...</option>
                                 <option value="0 - 1 Juta">Rp 0 - 1 Juta</option>
                                 <option value="1 - 10 Juta">Rp 1 - 10 Juta</option>
@@ -271,23 +726,26 @@
                         </div>
                     </div>
 
-                    <div class="grid md:grid-cols-2 gap-8">
+                    <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">Umur</label>
-                            <input type="number" id="age" placeholder="Contoh: 25" class="w-full p-4 text-sm" required>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">Umur</label>
+                            <input type="number" id="age" placeholder="Contoh: 25" class="w-full p-4 rounded-xl text-sm liquid-input" required>
                         </div>
                         <div>
-                            <label class="block text-[10px] text-gray-500 mb-3 uppercase tracking-widest font-bold">Asal Kota</label>
-                            <input type="text" id="city" placeholder="Contoh: Jakarta" class="w-full p-4 text-sm" required>
+                            <label class="block text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-extrabold">Asal Kota</label>
+                            <input type="text" id="city" placeholder="Contoh: Jakarta" class="w-full p-4 rounded-xl text-sm liquid-input" required>
                         </div>
                     </div>
 
-                    <div class="pt-6">
-                        <button type="button" onclick="submitToWA()" class="w-full neon-btn py-6 font-bold text-[10px] uppercase tracking-[0.3em]">
-                            Verifikasi Data & Hubungi Admin via WhatsApp →
+                    <div class="pt-4">
+                        <!-- Custom Inline Error / Notification Message -->
+                        <div id="formStatus" class="hidden mb-4 p-3 rounded-xl text-xs font-bold text-center"></div>
+
+                        <button type="button" id="submitBtn" onclick="handleSubmission()" class="w-full liquid-btn-lime py-5 rounded-xl font-black text-xs uppercase tracking-[0.25em]">
+                            Simpan Data & Chat Admin WA →
                         </button>
-                        <p class="text-[9px] text-center text-gray-600 mt-6 uppercase tracking-widest leading-relaxed">
-                            Data Anda akan diverifikasi secara manual oleh tim Stonevalley.<br>Akses modul akan diberikan setelah konfirmasi WhatsApp berhasil.
+                        <p class="text-[9px] text-center text-gray-400 mt-4 uppercase tracking-widest">
+                            Data dikirim ke database Stonevalley secara terenkripsi sebelum redirect ke WhatsApp.
                         </p>
                     </div>
                 </form>
@@ -295,30 +753,20 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="py-20 px-6 border-t border-[#3a3a3a]">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-16">
-            <div class="max-w-sm">
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="w-8 h-8 bg-[#8fec00] flex items-center justify-center font-bold text-[#151213] text-xs">SV</div>
-                    <span class="font-bold tracking-tighter text-lg uppercase">Stonevalley</span>
-                </div>
-                <p class="text-xs text-gray-500 leading-relaxed mb-8">Edukasi trading rasional dengan pendekatan data multi-dimensi. Fokus pada pembentukan kapabilitas mandiri.</p>
-                <div class="flex gap-6 text-[9px] font-bold tracking-[0.2em] uppercase">
-                    <a href="https://instagram.com/stonevalley.fx" class="text-[#8fec00] hover:underline">Instagram</a>
-                    <a href="#" class="hover:text-[#8fec00] transition">Telegram</a>
-                    <a href="#" class="hover:text-[#8fec00] transition">YouTube</a>
-                </div>
+    <footer class="py-12 px-6 border-t border-white/10 relative">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-3 mb-4">
+                <div class="w-7 h-7 liquid-pill-lime flex items-center justify-center font-black text-[#0a090a] text-xs rounded-lg">SV</div>
+                <span class="font-extrabold tracking-tight text-base uppercase text-white">Stonevalley 2.0</span>
             </div>
-            <div class="md:w-1/3 p-8 border border-red-900/20 bg-red-900/5">
-                <h6 class="text-[9px] font-bold text-red-500 mb-4 tracking-[0.2em] uppercase">Risk Management Policy</h6>
-                <p class="text-[9px] text-gray-600 leading-relaxed uppercase">
-                    Trading memiliki risiko kerugian tinggi. Konten ini bersifat edukatif. Kami bukan penasihat keuangan. Keberhasilan trading bergantung pada disiplin dan manajemen risiko individu.
-                </p>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto pt-16 mt-16 border-t border-[#3a3a3a] text-center text-[9px] text-gray-700 tracking-[0.4em] uppercase font-bold">
-            © 2026 Stonevalley Academy. All Rights Reserved. Built for Rational Traders.
+            
+            <p class="text-xs text-gray-400 mb-3 font-medium">
+                Official Instagram: <a href="https://instagram.com/stonevalleycap" target="_blank" class="text-[#8fec00] hover:underline font-bold">@stonevalleycap</a>
+            </p>
+
+            <p class="text-[9px] text-gray-500 tracking-[0.3em] uppercase font-bold">
+                © 2026 Stonevalley Academy. Built for Rational Traders.
+            </p>
         </div>
     </footer>
 
@@ -329,15 +777,15 @@
             {
                 label: "Level 01",
                 title: "Pondasi Mekanisme",
-                desc: "Memahami arsitektur pasar finansial dari dasar: Jenis instrumen, leverage, dan manajemen risiko sebagai pilar pertahanan utama.",
+                desc: "Memahami arsitektur pasar finansial dari dasar: Jenis instrumen, leverage, dan manajemen risiko.",
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+                    labels: ['Start', 'Week 1', 'Week 2', 'Week 3'],
                     datasets: [{
-                        label: 'Progres Fondasi',
-                        data: [10, 40, 70, 100],
+                        label: 'Mastery Curve',
+                        data: [0, 45, 80, 100],
                         borderColor: '#8fec00',
-                        backgroundColor: 'rgba(143, 236, 0, 0.1)',
+                        backgroundColor: 'rgba(143, 236, 0, 0.15)',
                         fill: true,
                         tension: 0.4
                     }]
@@ -346,26 +794,26 @@
             {
                 label: "Level 02",
                 title: "Telescopic Matrix",
-                desc: "Analisis top-down terpadu. Bagaimana menyelaraskan tren Monthly, Daily, hingga eksekusi presisi di M15 untuk konfluensi maksimal.",
+                desc: "Analisis multi-timeframe terpadu untuk mencari konfluensi antara tren besar dan eksekusi kecil.",
                 type: 'line',
                 data: {
-                    labels: ['M', 'W', 'D', 'H4', 'M15'],
+                    labels: ['MN', 'W1', 'D1', 'H4', 'M15'],
                     datasets: [
-                        { label: 'Macro Align', data: [95, 80, 60, 40, 20], borderColor: '#008c49' },
-                        { label: 'Micro Timing', data: [5, 20, 50, 75, 95], borderColor: '#8fec00' }
+                        { label: 'Macro Strength', data: [100, 90, 70, 50, 20], borderColor: '#008c49' },
+                        { label: 'Micro Entry', data: [10, 30, 60, 85, 100], borderColor: '#8fec00' }
                     ]
                 }
             },
             {
                 label: "Level 03",
                 title: "Smart Money (SMC)",
-                desc: "Membaca jejak institusi melalui BOS, CHoCH, dan validasi Order Block serta Liquidity Void (FVG).",
+                desc: "Identifikasi Order Block, Liquidity Sweeps, dan ketidakseimbangan pasar (FVG).",
                 type: 'bar',
                 data: {
-                    labels: ['BOS', 'CHoCH', 'OB', 'FVG'],
+                    labels: ['Liquidity', 'Structure', 'Entry'],
                     datasets: [{
-                        label: 'Validity Score',
-                        data: [80, 95, 85, 75],
+                        label: 'Success Rate',
+                        data: [85, 92, 78],
                         backgroundColor: '#8fec00'
                     }]
                 }
@@ -373,14 +821,14 @@
             {
                 label: "Level 04",
                 title: "Market Depth / DOM",
-                desc: "Memanfaatkan Depth of Market (DOM) untuk melihat tumpukan limit order aktual yang sering kali tidak terlihat di grafik candle biasa.",
+                desc: "Melihat tumpukan order riil (Buy/Sell Limit) yang menggerakkan harga secara aktual.",
                 type: 'bar',
                 data: {
-                    labels: ['Supply', 'Demand'],
+                    labels: ['Sell Limit', 'Buy Limit'],
                     datasets: [{
-                        label: 'Lot Volume',
-                        data: [4200, 5800],
-                        backgroundColor: ['#008c49', '#8fec00'],
+                        label: 'Volume (Lots)',
+                        data: [1500, 2800],
+                        backgroundColor: ['rgba(255,255,255,0.2)', '#8fec00'],
                         indexAxis: 'y'
                     }]
                 }
@@ -397,19 +845,23 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: true, labels: { color: '#666', font: { size: 9, weight: 'bold' } } }
-                    },
+                    plugins: { legend: { labels: { color: '#888', font: { size: 10 } } } },
                     scales: {
-                        y: { grid: { color: '#222' }, ticks: { color: '#555', font: { size: 9 } } },
-                        x: { grid: { display: false }, ticks: { color: '#555', font: { size: 9 } } }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#666', font: { size: 9 } } },
+                        x: { grid: { display: false }, ticks: { color: '#666', font: { size: 9 } } }
                     }
                 }
             });
         }
 
-        function switchPillar(index) {
-            document.querySelectorAll('.pillar-btn').forEach(b => b.classList.remove('bg-white/5', 'border-[#8fec00]'));
+        async function switchPillar(index) {
+            document.querySelectorAll('.pillar-btn').forEach(b => {
+                b.classList.remove('border-[#8fec00]', 'bg-white/10');
+            });
+            const activeBtn = document.getElementById('p-' + index);
+            if(activeBtn) {
+                activeBtn.classList.add('border-[#8fec00]', 'bg-white/10');
+            }
             
             document.getElementById('pillar-label').innerText = pillars[index].label;
             document.getElementById('pillar-title').innerText = pillars[index].title;
@@ -418,34 +870,223 @@
             initChart(index);
         }
 
-        function submitToWA() {
-            const name = document.getElementById('name').value;
-            const wa = document.getElementById('wa').value;
-            const market = document.getElementById('market').value;
-            const capital = document.getElementById('capital').value;
-            const age = document.getElementById('age').value;
-            const city = document.getElementById('city').value;
+        async function handleSubmission() {
+            const btn = document.getElementById('submitBtn');
+            const statusDiv = document.getElementById('formStatus');
 
-            if(!name || !wa || !market || !capital || !age || !city) {
-                alert('Bree, isi semua kolom pendaftarannya ya!');
+            const data = {
+                name: document.getElementById('name').value.trim(),
+                wa: document.getElementById('wa').value.trim(),
+                market: document.getElementById('market').value,
+                capital: document.getElementById('capital').value,
+                age: document.getElementById('age').value.trim(),
+                city: document.getElementById('city').value.trim()
+            };
+
+            if(!data.name || !data.wa || !data.market || !data.capital || !data.age || !data.city) {
+                if(statusDiv) {
+                    statusDiv.innerText = 'Bree, mohon lengkapi semua field pendaftaran terlebih dahulu!';
+                    statusDiv.className = "mb-4 p-3 rounded-xl text-xs font-bold text-center bg-red-500/20 text-red-400 border border-red-500/30 block";
+                }
                 return;
             }
 
-            const adminNumber = "6281234567890"; // GANTI DENGAN NOMOR WA ADMIN
-            const message = `Halo Admin Stonevalley 2.0!\n\nSaya ingin verifikasi pendaftaran portal edukasi:\n\n` +
-                            `• Nama: ${name}\n` +
-                            `• WhatsApp: ${wa}\n` +
-                            `• Fokus Pasar: ${market}\n` +
-                            `• Alokasi Modal: ${capital}\n` +
-                            `• Umur: ${age} Tahun\n` +
-                            `• Asal Kota: ${city}\n\n` +
-                            `Mohon instruksi selanjutnya untuk akses modul 'Bab 0 - Pro'. Terima kasih!`;
+            if(statusDiv) statusDiv.className = "hidden";
 
-            const waUrl = `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, '_blank');
+            btn.innerText = "MENGALIHKAN KE WHATSAPP...";
+            btn.disabled = true;
+
+            // URL Webhook Google Apps Script milikmu
+            const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz...EXAMPLE/exec"; 
+
+            // Kirim data ke spreadsheet secara async tanpa menahan proses redirect
+            if (WEBHOOK_URL && !WEBHOOK_URL.includes("EXAMPLE")) {
+                fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', 
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                }).catch(error => console.error("Gagal simpan database:", error));
+            }
+
+            // WHATSAPP API LINK DENGAN FORMAT BOLD
+            const adminNumber = "628197461007";
+            const message = `*Halo Admin Stonevalley 2.0!*\n\n` +
+                            `Saya telah mendaftar melalui Portal dengan rincian data berikut:\n\n` +
+                            `• *Nama Lengkap:* ${data.name}\n` +
+                            `• *No. WhatsApp:* ${data.wa}\n` +
+                            `• *Fokus Pasar:* ${data.market}\n` +
+                            `• *Rencana Modal:* ${data.capital}\n` +
+                            `• *Umur:* ${data.age} tahun\n` +
+                            `• *Asal Kota:* ${data.city}\n\n` +
+                            `Mohon verifikasi pendaftaran saya dan kirimkan akses modulnya. Terima kasih!`;
+
+            const waApiUrl = `https://api.whatsapp.com/send?phone=${adminNumber}&text=${encodeURIComponent(message)}`;
+
+            // Langsung buka WhatsApp via API
+            setTimeout(() => {
+                window.location.href = waApiUrl;
+            }, 200);
         }
 
         window.onload = () => switchPillar(0);
+
+        function updateTickerDisplay(symbol, price, change) {
+            const priceEl = document.getElementById(`price-${symbol}`);
+            const changeEl = document.getElementById(`change-${symbol}`);
+            
+            if(priceEl && changeEl) {
+                priceEl.innerText = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+                
+                const numChange = parseFloat(change).toFixed(2);
+                if(numChange > 0) {
+                    changeEl.innerText = `+${numChange}%`;
+                    changeEl.className = "text-[#8fec00] font-extrabold font-mono";
+                } else if (numChange < 0) {
+                    changeEl.innerText = `${numChange}%`;
+                    changeEl.className = "text-red-400 font-extrabold font-mono";
+                } else {
+                    changeEl.innerText = `${numChange}%`;
+                    changeEl.className = "text-gray-400 font-bold font-mono";
+                }
+            }
+        }
+
+        const mockPrices = {
+            BTCUSDT: { price: 65420.50, change: 2.35 },
+            ETHUSDT: { price: 3480.25, change: -0.82 },
+            SOLUSDT: { price: 152.80, change: 4.15 },
+            PAXGUSDT: { price: 2390.60, change: 1.12 }
+        };
+
+        let mockInterval = null;
+        function startSimulatedTicker() {
+            if (mockInterval) return;
+            Object.keys(mockPrices).forEach(sym => {
+                updateTickerDisplay(sym, mockPrices[sym].price, mockPrices[sym].change);
+            });
+            mockInterval = setInterval(() => {
+                Object.keys(mockPrices).forEach(sym => {
+                    const delta = (Math.random() - 0.49) * (mockPrices[sym].price * 0.0005);
+                    mockPrices[sym].price += delta;
+                    updateTickerDisplay(sym, mockPrices[sym].price, mockPrices[sym].change);
+                });
+            }, 2500);
+        }
+
+        async function fetchPricesREST() {
+            try {
+                const res = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=["BTCUSDT","ETHUSDT","SOLUSDT","PAXGUSDT"]');
+                if(!res.ok) throw new Error('REST API Failed');
+                const data = await res.json();
+                data.forEach(item => {
+                    updateTickerDisplay(item.symbol, parseFloat(item.lastPrice), parseFloat(item.priceChangePercent));
+                });
+            } catch (e) {
+                startSimulatedTicker();
+            }
+        }
+
+        function initLiveTicker() {
+            try {
+                const wsUrl = 'wss://stream.binance.com:9443/ws/btcusdt@ticker/ethusdt@ticker/solusdt@ticker/paxgusdt@ticker';
+                const ws = new WebSocket(wsUrl);
+
+                let isConnected = false;
+
+                ws.onopen = () => {
+                    isConnected = true;
+                };
+
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    updateTickerDisplay(data.s, parseFloat(data.c), parseFloat(data.P));
+                };
+
+                ws.onerror = () => {
+                    if(!isConnected) {
+                        try { ws.close(); } catch(e){}
+                        fetchPricesREST();
+                    }
+                };
+
+                ws.onclose = () => {
+                    if(!isConnected) {
+                        fetchPricesREST();
+                    }
+                };
+            } catch (err) {
+                fetchPricesREST();
+            }
+        }
+
+        initLiveTicker();
+
+        // ==============================================================
+        // SOSOVALUE API INTEGRATION FOR DAILY ETF SUMMARY
+        // ==============================================================
+        // MASUKKAN API KEY SOSOVALUE KAMU DI SINI:
+        const SOSOVALUE_API_KEY = "YOUR_SOSOVALUE_API_KEY_HERE";
+
+        async function fetchSoSoValueETFData() {
+            const btcDailyEl = document.getElementById('etf-btc-daily');
+            const ethDailyEl = document.getElementById('etf-eth-daily');
+            const btcCumEl = document.getElementById('etf-btc-cum');
+            const totalAumEl = document.getElementById('etf-total-aum');
+            const updateEl = document.getElementById('etf-last-update');
+
+            // Default Mock / Fallback Data jika API Key belum diisi
+            const fallbackData = {
+                btcDailyInflow: "+$248.50M",
+                ethDailyInflow: "+$34.20M",
+                btcCumulative: "$18.65B",
+                totalAUM: "$64.20B",
+                date: "Daily Summary"
+            };
+
+            if (!SOSOVALUE_API_KEY || SOSOVALUE_API_KEY === "YOUR_SOSOVALUE_API_KEY_HERE") {
+                // Tampilkan data contoh yang realistis
+                if (btcDailyEl) btcDailyEl.innerText = fallbackData.btcDailyInflow;
+                if (ethDailyEl) ethDailyEl.innerText = fallbackData.ethDailyInflow;
+                if (btcCumEl) btcCumEl.innerText = fallbackData.btcCumulative;
+                if (totalAumEl) totalAumEl.innerText = fallbackData.totalAUM;
+                if (updateEl) updateEl.innerText = "Mode: Demo (Masukan API Key)";
+                return;
+            }
+
+            try {
+                // Panggilan API SoSoValue resmi
+                const response = await fetch('https://api.sosovalue.com/api/v1/etf/summary', {
+                    method: 'GET',
+                    headers: {
+                        'x-soso-api-key': SOSOVALUE_API_KEY,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) throw new Error("SoSoValue API Error");
+                const result = await response.json();
+                
+                // Ekstrak data dari response SoSoValue
+                if (result && result.data) {
+                    if (btcDailyEl) btcDailyEl.innerText = (result.data.btcDaily >= 0 ? '+' : '') + `$${(result.data.btcDaily / 1e6).toFixed(2)}M`;
+                    if (ethDailyEl) ethDailyEl.innerText = (result.data.ethDaily >= 0 ? '+' : '') + `$${(result.data.ethDaily / 1e6).toFixed(2)}M`;
+                    if (btcCumEl) btcCumEl.innerText = `$${(result.data.btcCumulative / 1e9).toFixed(2)}B`;
+                    if (totalAumEl) totalAumEl.innerText = `$${(result.data.totalAUM / 1e9).toFixed(2)}B`;
+                    if (updateEl) updateEl.innerText = `Updated: ${new Date().toLocaleDateString()}`;
+                }
+            } catch (error) {
+                console.warn("Gagal memuat SoSoValue API, menggunakan data simulasi:", error);
+                if (btcDailyEl) btcDailyEl.innerText = fallbackData.btcDailyInflow;
+                if (ethDailyEl) ethDailyEl.innerText = fallbackData.ethDailyInflow;
+                if (btcCumEl) btcCumEl.innerText = fallbackData.btcCumulative;
+                if (totalAumEl) totalAumEl.innerText = fallbackData.totalAUM;
+                if (updateEl) updateEl.innerText = "Simulated Live Sync";
+            }
+        }
+
+        // Jalankan fetch ETF saat halaman dibuka
+        window.addEventListener('DOMContentLoaded', fetchSoSoValueETFData);
     </script>
 </body>
 </html>
